@@ -32,6 +32,7 @@ export interface Spec extends TurboModule {
   ): Promise<Permission[]>;
   requestExerciseRoute(recordId: string): Promise<ExerciseRoute>;
   getGrantedPermissions(): Promise<Permission[]>;
+  getFeatureStatus(feature: number): Promise<number>;
   revokeAllPermissions(): Promise<void>;
   insertRecords(records: HealthConnectRecord[]): Promise<string[]>;
   readRecords(recordType: string, options: ReadRecordsOptions): Promise<{}>;

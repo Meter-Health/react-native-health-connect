@@ -63,17 +63,32 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
     }
   }
 
-  fun requestPermission(
-    reactPermissions: ReadableArray,
-    promise: Promise
-  ) {
-    throwUnlessClientIsAvailable(promise) {
-      coroutineScope.launch {
-        val granted = HealthConnectPermissionDelegate.launchPermissionsDialog(PermissionUtils.parsePermissions(reactPermissions))
+fun requestPermission(
+  reactPermissions: ReadableArray,
+  promise: Promise
+) {
+  throwUnlessClientIsAvailable(promise) {
+    coroutineScope.launch {
+      try {
+        val requestedPermissions = PermissionUtils.parsePermissions(reactPermissions)
+        android.util.Log.d("HC_PERMS", "Requested permissions=$requestedPermissions")
+
+        val alreadyGranted = healthConnectClient.permissionController.getGrantedPermissions()
+        android.util.Log.d("HC_PERMS", "Already granted before dialog=$alreadyGranted")
+
+        val granted = HealthConnectPermissionDelegate.launchPermissionsDialog(requestedPermissions)
+        android.util.Log.d("HC_PERMS", "Granted from dialog=$granted")
+
+        val grantedAfter = healthConnectClient.permissionController.getGrantedPermissions()
+        android.util.Log.d("HC_PERMS", "Granted after dialog=$grantedAfter")
+
         promise.resolve(PermissionUtils.mapPermissionResult(granted))
+      } catch (e: Exception) {
+        promise.rejectWithException(e)
       }
     }
   }
+}
 
   fun requestExerciseRoute(
     recordId: String, promise: Promise
@@ -294,6 +309,19 @@ class HealthConnectManager(private val applicationContext: ReactApplicationConte
           } catch (e: Exception) {
             promise.rejectWithException(e)
           }
+        }
+      }
+    }
+  }
+
+  fun getFeatureStatus(feature: Int, promise: Promise) {
+    throwUnlessClientIsAvailable(promise) {
+      coroutineScope.launch {
+        try {
+          val status = healthConnectClient.features.getFeatureStatus(feature)
+          promise.resolve(status)
+        } catch (e: Exception) {
+          promise.rejectWithException(e)
         }
       }
     }

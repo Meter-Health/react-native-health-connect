@@ -222,5 +222,9 @@ export function deleteRecordsByTimeRange(
   return HealthConnect.deleteRecordsByTimeRange(recordType, timeRangeFilter);
 }
 
+export function getFeatureStatus(feature: number): Promise<number> {
+  return HealthConnect.getFeatureStatus(feature);
+}
+
 export * from './constants';
 export * from './types';

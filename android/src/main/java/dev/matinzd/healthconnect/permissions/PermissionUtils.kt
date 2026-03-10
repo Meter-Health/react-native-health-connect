@@ -9,37 +9,49 @@ import dev.matinzd.healthconnect.utils.reactRecordTypeToClassMap
 
 class PermissionUtils {
   companion object {
-    fun parsePermissions(reactPermissions: ReadableArray): Set<String> {
-      return reactPermissions.toArrayList().mapNotNull {
-        it as HashMap<*, *>
-        val recordType = it["recordType"]
-        val accessType = it["accessType"]
+fun parsePermissions(reactPermissions: ReadableArray): Set<String> {
+  return reactPermissions.toArrayList().mapNotNull {
+    it as HashMap<*, *>
+    val recordType = it["recordType"]
+    val accessType = it["accessType"]
 
-        if (accessType == "write" && recordType == "ExerciseRoute") {
-          return@mapNotNull HealthPermission.PERMISSION_WRITE_EXERCISE_ROUTE
-        }
-
-        if (accessType == "read" && recordType == "ReadHealthDataHistory") {
-          return@mapNotNull HealthPermission.PERMISSION_READ_HEALTH_DATA_HISTORY
-        }
-
-        if (accessType == "read" && recordType == "BackgroundAccessPermission") {
-          return@mapNotNull HealthPermission.PERMISSION_READ_HEALTH_DATA_IN_BACKGROUND
-        }
-
-        val recordClass = reactRecordTypeToClassMap[recordType] ?: throw InvalidRecordType()
-
-        when (accessType) {
-          "write" -> HealthPermission.getWritePermission(recordClass)
-          "read" -> HealthPermission.getReadPermission(recordClass)
-          else -> null
-        }
-      }.toSet()
+    if (accessType == "write" && recordType == "ExerciseRoute") {
+      android.util.Log.d("HC_PERMS", "recordType=ExerciseRoute accessType=write permission=${HealthPermission.PERMISSION_WRITE_EXERCISE_ROUTE}")
+      return@mapNotNull HealthPermission.PERMISSION_WRITE_EXERCISE_ROUTE
     }
 
-    suspend fun getGrantedPermissions(permissionController: PermissionController): WritableNativeArray {
-      return mapPermissionResult(permissionController.getGrantedPermissions())
+    if (accessType == "read" && recordType == "ReadHealthDataHistory") {
+      android.util.Log.d("HC_PERMS", "recordType=ReadHealthDataHistory accessType=read permission=${HealthPermission.PERMISSION_READ_HEALTH_DATA_HISTORY}")
+      return@mapNotNull HealthPermission.PERMISSION_READ_HEALTH_DATA_HISTORY
     }
+
+    if (accessType == "read" && recordType == "BackgroundAccessPermission") {
+      android.util.Log.d("HC_PERMS", "recordType=BackgroundAccessPermission accessType=read permission=${HealthPermission.PERMISSION_READ_HEALTH_DATA_IN_BACKGROUND}")
+      return@mapNotNull HealthPermission.PERMISSION_READ_HEALTH_DATA_IN_BACKGROUND
+    }
+
+    val recordClass = reactRecordTypeToClassMap[recordType] ?: throw InvalidRecordType()
+
+    val permission = when (accessType) {
+      "write" -> HealthPermission.getWritePermission(recordClass)
+      "read" -> HealthPermission.getReadPermission(recordClass)
+      else -> null
+    }
+
+    android.util.Log.d(
+      "HC_PERMS",
+      "recordType=$recordType accessType=$accessType recordClass=${recordClass.qualifiedName} permission=$permission"
+    )
+
+    permission
+  }.toSet()
+}
+
+suspend fun getGrantedPermissions(permissionController: PermissionController): WritableNativeArray {
+  val granted = permissionController.getGrantedPermissions()
+  android.util.Log.d("HC_PERMS", "Granted permissions=$granted")
+  return mapPermissionResult(granted)
+}
 
     fun mapPermissionResult(grantedPermissions: Set<String>): WritableNativeArray {
       return WritableNativeArray().apply {

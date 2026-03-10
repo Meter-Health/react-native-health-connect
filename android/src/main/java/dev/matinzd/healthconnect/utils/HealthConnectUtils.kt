@@ -132,23 +132,10 @@ fun ReadableMap.getTimeRangeFilter(key: String? = null): TimeRangeFilter {
 
 fun convertMetadataFromJSMap(meta: ReadableMap?): Metadata {
   if (meta == null) {
-    return Metadata()
+    return Metadata.unknownRecordingMethod()
   }
-
-  return Metadata(
-    id = meta.getSafeString("id", ""),
-    clientRecordId = meta.getString("clientRecordId"),
-    clientRecordVersion = meta.getSafeDouble("clientRecordVersion", 0.0).toLong(),
-    dataOrigin = DataOrigin(meta.getSafeString("dataOrigin", "")),
-    lastModifiedTime = Instant.parse(meta.getSafeString("lastModifiedTime", Instant.now().toString())),
-    device = meta.getMap("device")?.let {
-      Device(
-        type = it.getSafeInt("type", Device.TYPE_UNKNOWN),
-        manufacturer = it.getString("manufacturer"),
-        model = it.getString("model"),
-      )
-    },
-    recordingMethod = meta.getSafeInt("recordingMethod", Metadata.RECORDING_METHOD_UNKNOWN)
+  return Metadata.unknownRecordingMethod(
+    clientRecordId = meta.getString("clientRecordId") ?: "",
   )
 }
 
@@ -216,7 +203,8 @@ val reactRecordTypeToClassMap: Map<String, KClass<out Record>> = mapOf(
   "Weight" to WeightRecord::class,
   "WheelchairPushes" to WheelchairPushesRecord::class,
   "IntermenstrualBleeding" to IntermenstrualBleedingRecord::class,
-  "MenstruationPeriod" to MenstruationPeriodRecord::class
+  "MenstruationPeriod" to MenstruationPeriodRecord::class,
+  "Mindfulness" to MindfulnessSessionRecord::class
 )
 
 val reactRecordTypeToReactClassMap: Map<String, Class<out ReactHealthRecordImpl<*>>> = mapOf(
@@ -257,7 +245,8 @@ val reactRecordTypeToReactClassMap: Map<String, Class<out ReactHealthRecordImpl<
   "Weight" to ReactWeightRecord::class.java,
   "WheelchairPushes" to ReactWheelchairPushesRecord::class.java,
   "IntermenstrualBleeding" to ReactIntermenstrualBleedingRecord::class.java,
-  "MenstruationPeriod" to ReactMenstruationPeriodRecord::class.java
+  "MenstruationPeriod" to ReactMenstruationPeriodRecord::class.java,
+  "Mindfulness" to ReactMindfulnessSessionRecord::class.java
 )
 
 val reactClassToReactTypeMap = reactRecordTypeToReactClassMap.entries.associateBy({ it.value }) { it.key }
@@ -300,7 +289,8 @@ val healthConnectClassToReactClassMap = mapOf(
   WeightRecord::class.java to ReactWeightRecord::class.java,
   WheelchairPushesRecord::class.java to ReactWheelchairPushesRecord::class.java,
   IntermenstrualBleedingRecord::class.java to ReactIntermenstrualBleedingRecord::class.java,
-  MenstruationPeriodRecord::class.java to ReactMenstruationPeriodRecord::class.java
+  MenstruationPeriodRecord::class.java to ReactMenstruationPeriodRecord::class.java,
+  MindfulnessSessionRecord::class.java to ReactMindfulnessSessionRecord::class.java
 )
 
 fun massToJsMap(mass: Mass?): WritableNativeMap {

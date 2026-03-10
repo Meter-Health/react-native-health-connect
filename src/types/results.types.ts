@@ -47,6 +47,7 @@ import type {
   Vo2MaxRecord,
   WeightRecord,
   WheelchairPushesRecord,
+  MindfulnessRecord,
 } from './records.types';
 
 type Identity<T> = { [P in keyof T]: T[P] };
@@ -276,6 +277,8 @@ interface OxygenSaturationRecordResult extends OxygenSaturationRecord {}
 interface PowerRecordResult
   extends Replace<PowerRecord, 'samples', PowerSampleResult[]> {}
 
+interface MindfulnessRecordResult extends MindfulnessRecord {}
+
 export type HealthConnectRecordResult =
   | ActiveCaloriesBurnedRecordResult
   | BasalBodyTemperatureRecordResult
@@ -315,7 +318,8 @@ export type HealthConnectRecordResult =
   | OvulationTestRecordResult
   | TotalCaloriesBurnedRecordResult
   | OxygenSaturationRecordResult
-  | PowerRecordResult;
+  | PowerRecordResult
+  | MindfulnessSessionRecordResult;
 
 export type RecordResult<T extends RecordType> = Omit<
   Extract<HealthConnectRecordResult, { recordType: T }>,

@@ -330,6 +330,14 @@ export interface PowerRecord extends IntervalRecord {
   samples: PowerSample[];
 }
 
+export interface MindfulnessRecord extends IntervalRecord {
+  recordType: 'Mindfulness';
+  // Use MindfulnessSessionType constant
+  mindfulnessSessionType?: number;
+  title?: string;
+  notes?: string;
+}
+
 export type HealthConnectRecord =
   | ActiveCaloriesBurnedRecord
   | BasalBodyTemperatureRecord
@@ -368,7 +376,8 @@ export type HealthConnectRecord =
   | OvulationTestRecord
   | TotalCaloriesBurnedRecord
   | OxygenSaturationRecord
-  | PowerRecord;
+  | PowerRecord
+  | MindfulnessRecord;
 
 export type RecordType = HealthConnectRecord['recordType'];
 

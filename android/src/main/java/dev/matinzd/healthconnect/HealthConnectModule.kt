@@ -112,6 +112,10 @@ class HealthConnectModule internal constructor(context: ReactApplicationContext)
     return manager.deleteRecordsByTimeRange(recordType, timeRangeFilter, promise)
   }
 
+  @ReactMethod
+  override fun getFeatureStatus(feature: Double, promise: Promise) {
+    return manager.getFeatureStatus(feature.toInt(), promise)
+  }
   companion object {
     const val NAME = "HealthConnect"
   }
