@@ -19,7 +19,7 @@
 
  - changed connect client to version 1.1.0
  - Added Mindfulness
- - Added checkFeature
+ - Added checkFeature function
 
 ---
 
