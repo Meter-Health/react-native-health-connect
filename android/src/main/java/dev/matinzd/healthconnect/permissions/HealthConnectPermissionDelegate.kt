@@ -21,7 +21,7 @@ object HealthConnectPermissionDelegate {
 
   fun setPermissionDelegate(
     activity: ComponentActivity,
-    providerPackageName: String = "com.google.android.healthconnect.controller"
+    providerPackageName: String = "com.google.android.apps.healthdata"
   ) {
     val contract = PermissionController.createRequestPermissionResultContract(providerPackageName)
     val exerciseRouteRequestContract = ExerciseRouteRequestContract()
