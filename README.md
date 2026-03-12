@@ -18,7 +18,7 @@
 ### Fork changelog:
 
  - changed connect client to version 1.1.0
- - Added Mindfulness
+ - Added Mindfulness support for Android version 15, 16
  - Added checkFeature function
 
 ---
