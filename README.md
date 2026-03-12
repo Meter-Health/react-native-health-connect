@@ -17,8 +17,8 @@
 ## METER HEALTH
 ### Fork changelog:
 
- - changed connect client to version 1.1.0
- - Added Mindfulness support for Android version 15, 16
+ - changed connect client version to 1.1.0 (stable)
+ - Added Mindfulness  (only supported on Android 15 & 16 )
  - Added checkFeature function
 
 ---
