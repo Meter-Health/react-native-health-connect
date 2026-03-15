@@ -277,7 +277,7 @@ interface OxygenSaturationRecordResult extends OxygenSaturationRecord {}
 interface PowerRecordResult
   extends Replace<PowerRecord, 'samples', PowerSampleResult[]> {}
 
-interface MindfulnessRecordResult extends MindfulnessRecord {}
+interface MindfulnessSessionRecordResult extends MindfulnessRecord {}
 
 export type HealthConnectRecordResult =
   | ActiveCaloriesBurnedRecordResult
