@@ -1,7 +1,7 @@
 {
-  "name": "react-native-health-connect",
-  "version": "3.5.0",
-  "description": "React native library for health connect (Android only)",
+  "name": "@meter-health/react-native-health-connect",
+  "version": "1.0.0",
+  "description": "(FORK) React native library for health connect (Android only)",
   "funding": "https://github.com/matinzd/react-native-health-connect?sponsor=1",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
