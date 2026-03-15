@@ -46,6 +46,18 @@ jobs:
           fi
           echo "✅ Version match: $PKG_VERSION"
 
+      - name: Remove unused workspaces
+        run: |
+          node -e "
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            delete pkg.workspaces;
+            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
+          "
+
+      - name: Install dependencies
+        run: yarn install --no-immutable
+
       - name: Publish
         run: npm publish --provenance --access public
         env:
