@@ -1,5 +1,5 @@
 {
-  "name": "@meter-health/react-native-health-connect",
+  "name": "@krantzr/react-native-health-connect",
   "version": "1.0.0",
   "description": "(FORK) React native library for health connect (Android only)",
   "funding": "https://github.com/matinzd/react-native-health-connect?sponsor=1",
