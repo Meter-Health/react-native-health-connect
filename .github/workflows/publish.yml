@@ -43,6 +43,11 @@ jobs:
         run: |
           echo 'enableImmutableInstalls: false' >> .yarnrc.yml
 
+      - name: Debug yarnrc
+        run: cat .yarnrc.yml
+
+      - name: Install dependencies
+        run: yarn install --ignore-scripts
       - name: Install dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install --immutable
