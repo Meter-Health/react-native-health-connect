@@ -8,7 +8,10 @@
   "types": "lib/typescript/index.d.ts",
   "react-native": "src/index",
   "source": "src/index",
-  "repository": "https://github.com/matinzd/react-native-health-connect",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Meter-Health/react-native-health-connect.git"
+},
   "author": "matinzd <me@matinzd.dev> (https://github.com/matinzd)",
   "license": "MIT",
   "bugs": {
